@@ -8,7 +8,7 @@ shift 2
 
 echo "Benchmarking: ${INPUT} on device ${DEVICE}"
 
-timeout 50s tools/iree-benchmark-module \
+timeout 20s tools/iree-benchmark-module \
   --device="rocm://${DEVICE}" \
   --device_allocator=caching \
   --module="${INPUT}" \
