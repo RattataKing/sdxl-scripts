@@ -1,0 +1,37 @@
+name: Pre-commit Checks
+
+on: 
+  pull_request:
+    paths:
+      - "tuning/*"
+
+permissions:
+  contents: read
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.7
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          pip install -r tuning/tuner_requirements/requirements.txt
+
+      # - name: Run lint test
+      #   run: pre-commit run --all-files --show-diff-on-failure --color=always
+                
+      - name: Run pytest
+        working-directory: tuning
+        run: |
+          python -m pytest test_autotune.py
+          python -m pytest test_tune.py
